@@ -1,10 +1,12 @@
+color whichever one is selected
+instructions
+get the correct colors for the bart lines
+do the translations manually (i.e. richmond-whatever moved two pixels left, etc.)
+put an arc chart in the tooltip
+tooltip
 
 
-get gtfs data
-place the map and chord diagram harmoniously on the page
 
 
-add a bootstrap template with title
-color the dots and chords the same
-make the indexes the same between chords and dots
+
 

@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<link rel="stylesheet" href="style/style.css">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 <style>
   body{
     background: #111;
+    color: #ddd;
   }
 </style>
 
+<link rel="stylesheet" href="style/style.css">
 
 <body>
-<div class="container">
-  <div class="row" style="background-color: #111;">
-    <div class="col-lg-6" id="map"></div>
-    <div id="chord" class="col-lg-6"></div>
+  <div class="container">
+
+  <h1>5Chainz: BART station ridership</h1>
+
+    <div class="row" style="background-color: #111;">
+      <div class="col-lg-6" id="map"></div>
+      <div id="chord" class="col-lg-6"></div>
+    </div>
   </div>
-</div>
+  <div class="tooltip"></div>
 </body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
@@ -51,7 +56,9 @@ var width = parseInt(d3.select('#map').style('width'))
     , height = 600
 
 var colorScale = d3.scale.category20c();
-var routeColors = d3.scale.category10();
+var routeColors = d3.scale.ordinal()
+  .domain(d3.range(5))
+  .range(["#fdf057","#2aabe2","#e11e58","#f9a11d","#4fb848"])
 
 var lonlat = [-122.25, 37.77];
 
@@ -185,6 +192,9 @@ function draw(err, bay, locs_raw, ride, routes_raw){
     .on('mouseout', mOutCall)
   test = locs;
 
+  drawTooltip();
+
+
 } //end draw
 
 function undraw(){
@@ -278,5 +288,30 @@ function zoomed() {
   g.selectAll('.routes').attr("d", path);
   g.selectAll(".stationG").attr("transform", placeIt);
 }
+
+function drawTooltip(){
+  console.log('firing drawTooltip')
+  var tooltip = d3.select(".tooltip");
+  d3.selectAll('.stationG')
+    .on("mousemove", function(d) { 
+      tooltip.transition().duration(100)
+        .style("opacity", .7)
+        console.log("LOG:","firing");
+      tooltip.html( 
+           d.name + "<br>"
+          + "Total Exits: "+ d.r.Exits + "<br>"
+        )
+        .style("left", (d3.event.pageX + 20)  + "px")
+        .style("top", (d3.event.pageY - 50) + "px");     
+    })
+    .on("mouseout", function(d) {
+      d3.select(this).transition().duration()
+          .attr("stroke", "none")
+
+      tooltip.transition().duration(200)
+        .style("opacity", 0);
+    });
+} //end of drawtooltip
+
 
 </script>

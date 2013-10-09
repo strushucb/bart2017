@@ -51,6 +51,9 @@ body{
   padding-top: 100px;
 }
 
+h1{
+  font-color: #eee;
+}
 .chordBlock{
   cursor: pointer; 
 }
@@ -59,4 +62,12 @@ body{
   /*stroke: #eee;*/
   stroke-width: 2px;
   fill: none;
+}
+
+.tooltip{
+  font-size: 12px;
+  background: #444;
+  color: #eee;
+  padding: 10px;
+  border-radius: 6px;
 }
