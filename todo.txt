@@ -1,10 +1,10 @@
-create an html file
-put the map in it
-download the topojson
-
-give enjalot the bart stations location json and csv
-put a max on the zoom
-wouldn't it be cool if, when you clicked on a thing, it sent out waves from itself of changes? would need to make a graph tree in the computer science sense
 
 
-get gtfs data for routes so you can draw them
+get gtfs data
+place the map and chord diagram harmoniously on the page
+
+
+add a bootstrap template with title
+color the dots and chords the same
+make the indexes the same between chords and dots
+

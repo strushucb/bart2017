@@ -6,7 +6,7 @@
 <body>
 <div class="container">
   <!-- <div class="row-flusid"> -->
-    <div class="col-lg-12" id="map"></div>
+    <div class="col-lg-7" id="map"></div>
     <div id="chord"></div>
   </div>
 <!-- </div> -->
@@ -40,7 +40,7 @@ var emerald = '#2ecc71',
   darkPurple = '#8e44ad';
 
 var width = parseInt(d3.select('#map').style('width'))
-    , mapRatio = .5
+    , mapRatio = .7
     , height = width * mapRatio;
 
 var colorScale = d3.scale.category20();
@@ -59,7 +59,7 @@ var path = d3.geo.path()
 var zoom = d3.behavior.zoom()
     .translate(projection.translate())
     .scale(projection.scale())
-    // .scaleExtent([height, 8 * height])
+    .scaleExtent([49004*.8, 3*49004])
     .on("zoom", zoomed);
 
 var svg = d3.select("#map").append("svg")
@@ -102,8 +102,9 @@ function draw(err, bay, locs_raw, ride){
 
 //bart stations
 
-  ride.forEach(function(place){
+  console.log("LOG:",ride);
 
+  ride.forEach(function(place){
     d3.keys(place).forEach(function(key){
       if(key!=='name') place[key] = +place[key];
     })

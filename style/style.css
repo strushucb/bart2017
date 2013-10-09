@@ -31,10 +31,10 @@
 
 #chord{
   height: 600px;
-  width: 600px;
+  width: 650px;
   position: absolute;
   top: 50px;
-  right: 50px;
+  right: 100px;
 }
 
 body{
