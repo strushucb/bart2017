@@ -67,7 +67,7 @@ var path = d3.geo.path()
 var zoom = d3.behavior.zoom()
     .translate(projection.translate())
     .scale(projection.scale())
-    .scaleExtent([49004*.8, 3*49004])
+    .scaleExtent([49004*.8, 3.5*49004])
     .on("zoom", zoomed);
 
 var svg = d3.select("#map").append("svg")
@@ -119,7 +119,8 @@ function draw(err, bay, locs_raw, ride, routes_raw){
       .append("path")
       .attr("class", "routes")
       .attr("transform",function(d,i){
-        return "translate(" + i*1.5 + ",0)"
+        // if(i%2==0) return "translate(" + (i)*1.5 + ",0)"
+        return "translate(" + (i*2 -5) + "," + (i*1-2) + ")";
       })
       .attr("stroke", function(d,i){
         return routeColors(i)
@@ -272,6 +273,7 @@ function placeIt(d){
 
 function zoomed() {
   projection.translate(d3.event.translate).scale(d3.event.scale);
+  // console.log("LOG:",d3.event.scale);
   g.selectAll(".water").attr("d", path);
   g.selectAll('.routes').attr("d", path);
   g.selectAll(".stationG").attr("transform", placeIt);
