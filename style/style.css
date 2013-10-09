@@ -32,10 +32,14 @@
 
 #chord{
   height: 600px;
-  width: 675px;
+/*  width: 675px;
   position: absolute;
   top: 50px;
-  right: 100px;
+  right: 100px;*/
+}
+
+#chart{
+  border-radius: 100px;
   background: #111;
 }
 
@@ -49,4 +53,10 @@ body{
 
 .chordBlock{
   cursor: pointer; 
+}
+
+.routes{
+  /*stroke: #eee;*/
+  stroke-width: 1.5px;
+  fill: none;
 }

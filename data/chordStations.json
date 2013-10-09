@@ -99,7 +99,7 @@
   },
   {
     "code": "12",
-    "name": "12th St / Oakland City Center",
+    "name": "12th St Oakland City Center",
     "x": 406.72745221162216,
     "y": 231.4813762536133,
     "nameX": 10,
@@ -138,7 +138,7 @@
   },
   {
     "code": "CL",
-    "name": "Coliseum / Oakland Airport",
+    "name": "Coliseum/Oak. Ariport",
     "x": 471.8996493296977,
     "y": 335.59136392283256,
     "nameX": 12,
@@ -455,7 +455,7 @@
   },
   {
     "code": "ED",
-    "name": "Dublin / Pleasanton",
+    "name": "Dublin/Pleasanton",
     "x": 644.9518940068036,
     "y": 397.96949249867816,
     "nameX": 14,
@@ -466,7 +466,7 @@
   },
   {
     "code": "NC",
-    "name": "North Concord / Martinez",
+    "name": "North Concord/Martinez",
     "x": 576.5643980837334,
     "y": 61.740233782883735,
     "nameX": 16,
@@ -477,7 +477,7 @@
   },
   {
     "code": "WP",
-    "name": "Pittsburg / Baypoint",
+    "name": "Pittsburg/Baypoint",
     "x": 596.3787407822348,
     "y": 40.58420126937335,
     "nameX": 17,

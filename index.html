@@ -2,14 +2,20 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="style/style.css">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body{
+    background: #111;
+  }
+</style>
+
 
 <body>
 <div class="container">
-  <!-- <div class="row-flusid"> -->
+  <div class="row" style="background-color: #111;">
     <div class="col-lg-6" id="map"></div>
-    <div id="chord"></div>
+    <div id="chord" class="col-lg-6"></div>
   </div>
-<!-- </div> -->
+</div>
 </body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
@@ -41,9 +47,11 @@ var emerald = '#2ecc71',
 
 var width = parseInt(d3.select('#map').style('width'))
     , mapRatio = .8
-    , height = width * mapRatio;
+    // , height = width * mapRatio;
+    , height = 600
 
 var colorScale = d3.scale.category20c();
+var routeColors = d3.scale.category10();
 
 var lonlat = [-122.25, 37.77];
 
@@ -70,7 +78,6 @@ var g = svg.append("g")
     .attr("class", "mainG")
     .call(zoom);
 
-var test;
 
 var rScale = d3.scale.sqrt().range([1,10]);
 
@@ -83,15 +90,21 @@ queue()
   .defer(d3.json, 'data/bayareaTOPO.json')
   .defer(d3.csv, 'data/bart_stations.csv')
   .defer(d3.csv, 'data/ridership.csv')
+  .defer(d3.json,'data/lasers.json')
   .await(draw)
 
 var locs;
 var ridership = {}
 var max;
+var map;
 
-function draw(err, bay, locs_raw, ride){
+function draw(err, bay, locs_raw, ride, routes_raw){
 //bayarea
   var water = topojson.feature(bay, bay.objects.bayareaGEO);
+  var routes = topojson.feature(routes_raw, routes_raw.objects.routes)
+
+  console.log("LOG:",routes);
+  map = routes
 
   locs = locs_raw;
 
@@ -99,6 +112,20 @@ function draw(err, bay, locs_raw, ride){
       .datum(water)
       .attr("class", "water")
       .attr("d", path);
+
+  var routesOutline = g.selectAll('routes')
+      .data(routes.features)
+        .enter()
+      .append("path")
+      .attr("class", "routes")
+      .attr("transform",function(d,i){
+        return "translate(" + i*1.5 + ",0)"
+      })
+      .attr("stroke", function(d,i){
+        return routeColors(i)
+      })
+      .attr("d", path);
+
 
 //bart stations
 
@@ -136,7 +163,7 @@ function draw(err, bay, locs_raw, ride){
     .attr("transform", placeIt)
     .attr("class", "stationG")
 
-    stationG.append('circle')
+  stationG.append('circle')
     .attr({
       class: 'station',
       r: function(d){
@@ -245,7 +272,8 @@ function placeIt(d){
 
 function zoomed() {
   projection.translate(d3.event.translate).scale(d3.event.scale);
-  g.selectAll("path").attr("d", path);
+  g.selectAll(".water").attr("d", path);
+  g.selectAll('.routes').attr("d", path);
   g.selectAll(".stationG").attr("transform", placeIt);
 }
 
