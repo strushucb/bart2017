@@ -6,7 +6,7 @@
 <body>
 <div class="container">
   <!-- <div class="row-flusid"> -->
-    <div class="col-lg-7" id="map"></div>
+    <div class="col-lg-6" id="map"></div>
     <div id="chord"></div>
   </div>
 <!-- </div> -->
@@ -40,12 +40,12 @@ var emerald = '#2ecc71',
   darkPurple = '#8e44ad';
 
 var width = parseInt(d3.select('#map').style('width'))
-    , mapRatio = .7
+    , mapRatio = .8
     , height = width * mapRatio;
 
-var colorScale = d3.scale.category20();
+var colorScale = d3.scale.category20c();
 
-var lonlat = [-122.1, 37.77];
+var lonlat = [-122.25, 37.77];
 
 var projection = d3.geo.mercator()
 //var projection = d3.geo.albers()
@@ -102,8 +102,6 @@ function draw(err, bay, locs_raw, ride){
 
 //bart stations
 
-  console.log("LOG:",ride);
-
   ride.forEach(function(place){
     d3.keys(place).forEach(function(key){
       if(key!=='name') place[key] = +place[key];
@@ -123,11 +121,11 @@ function draw(err, bay, locs_raw, ride){
   locs.forEach(function(d, i){
     d.gtfs_latitude = +d.gtfs_latitude;
     d.gtfs_longitude = +d.gtfs_longitude;
+    d.index = +d.index;
     //now add the ridership in
     var place = d.id;
     var r = ridership[place];
     d['r'] = r;
-    d['index'] = i;
   });
 
 
@@ -145,13 +143,16 @@ function draw(err, bay, locs_raw, ride){
         var num = +d.r.Exits;
         return rScale(num)
       },
-      fill: '#e74c3c',
-      stroke: "#222"
+      fill: function(d,i){
+        return colorScale(d.index)
+      },
+      // stroke: "#222"
     })
 
   stationG.append("circle")
     .attr("r", "15px")
     .style("opacity", ".07")
+    .attr("fill","#ccc")
     .on('mouseover', mOverCall)
     .on('mouseout', mOutCall)
   test = locs;
@@ -174,7 +175,7 @@ function undraw(){
 function mOverCall(station, index){
   redraw(station, index);
   var other_svg = d3.select(".chordSVG");
-  fade(.1, other_svg)(station, index);
+  fade(.1, other_svg)(station, station.index);
 }
 
 function mOutCall(station, index){

@@ -11,11 +11,11 @@ d3.chart.chord = function(container) {
 var trans = svg.transition().duration(750),
     delay = function(d, i) { return i * 50; };
 
-  var offset = 150;
+  var offset = 75;
   var w = parseInt(d3.select('#chord').style('width')) - offset,
       h = parseInt(d3.select('#chord').style('height')) - offset,
-      r0 = Math.min(w, h) * .30,
-      r1 = r0 * 1.144;
+      r0 = Math.min(w, h) * .35,
+      r1 = r0 * 1.15;
   var format = d3.format("3n")
 
   var fill = d3.scale.category20c();
@@ -85,10 +85,11 @@ var trans = svg.transition().duration(750),
     .text(function(d,i) { 
       if(d.rot < 90) {
         return rows[d.index] 
-      } else {
-        d3.select(this).classed("number", true)
-        return format(Math.round(d.value))
       }
+      //  else {
+      //   d3.select(this).classed("number", true)
+      //   return format(Math.round(d.value))
+      // }
     })
     ticks
     .append("tspan")
@@ -96,10 +97,11 @@ var trans = svg.transition().duration(750),
     .text(function(d,i) { 
       if(d.rot > 90) {
         return rows[d.index] 
-      } else {
-        d3.select(this).classed("number", true)
-        return format(Math.round(d.value)) 
-      }
+      } 
+      // else {
+      //   d3.select(this).classed("number", true)
+      //   return format(Math.round(d.value)) 
+      // }
     })
 
       
