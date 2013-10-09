@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="style/style.css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+<body>
+<div class="container">
+  <!-- <div class="row-flusid"> -->
+    <div class="col-lg-12" id="map"></div>
+    <div id="chord"></div>
+  </div>
+<!-- </div> -->
+</body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+<script src="scripts/chord.js"></script>
+
+<!-- begin now -->
+<script>
+
+
+var emerald = '#2ecc71',
+  lightBlue = '#3498db',
+  midBlue = '#2980b9',
+  midnightBlue = '#2c3e50',
+  pomegranate = '#c0392b',
+  brightRed = '#e74c3c',
+  clouds = '#ecf0f1',
+  silver = '#bdc3c7',
+  concrete = '#95a5a6',
+  asbestos = '#7f8c8d',
+  asphalt = '#34495e',
+  turquoise = '#1abc9c',
+  greenSea = '#16a085',
+  sunflower = '#f1c40f',
+  orange = '#f39c12',
+  lightPurple = '#9b59b6',
+  darkPurple = '#8e44ad';
+
+var width = parseInt(d3.select('#map').style('width'))
+    , mapRatio = .5
+    , height = width * mapRatio;
+
+var colorScale = d3.scale.category20();
+
+var lonlat = [-122.1, 37.77];
+
+var projection = d3.geo.mercator()
+//var projection = d3.geo.albers()
+  .center(lonlat)  
+  .scale(49004)
+  .translate([width/2, height/2]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var zoom = d3.behavior.zoom()
+    .translate(projection.translate())
+    .scale(projection.scale())
+    // .scaleExtent([height, 8 * height])
+    .on("zoom", zoomed);
+
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var g = svg.append("g")
+    .attr("class", "mainG")
+    .call(zoom);
+
+var test;
+
+var rScale = d3.scale.sqrt().range([1,10]);
+
+g.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height);
+
+queue()
+  .defer(d3.json, 'data/bayareaTOPO.json')
+  .defer(d3.csv, 'data/bart_stations.csv')
+  .defer(d3.csv, 'data/ridership.csv')
+  .await(draw)
+
+var locs;
+var ridership = {}
+var max;
+
+function draw(err, bay, locs_raw, ride){
+//bayarea
+  var water = topojson.feature(bay, bay.objects.bayareaGEO);
+
+  locs = locs_raw;
+
+  var outline = g.append("path")
+      .datum(water)
+      .attr("class", "water")
+      .attr("d", path);
+
+//bart stations
+
+  ride.forEach(function(place){
+
+    d3.keys(place).forEach(function(key){
+      if(key!=='name') place[key] = +place[key];
+    })
+
+    ridership[place.name] = place;
+  });
+
+  max = d3.max(
+      _.map(ridership, function(place){
+        return d3.max(_.values(place));
+      })
+    )
+
+  rScale.domain([0, max])
+
+  locs.forEach(function(d, i){
+    d.gtfs_latitude = +d.gtfs_latitude;
+    d.gtfs_longitude = +d.gtfs_longitude;
+    //now add the ridership in
+    var place = d.id;
+    var r = ridership[place];
+    d['r'] = r;
+    d['index'] = i;
+  });
+
+
+  var stationG = g.selectAll('stations')
+    .data(locs)
+      .enter()
+    .append("g")
+    .attr("transform", placeIt)
+    .attr("class", "stationG")
+
+    stationG.append('circle')
+    .attr({
+      class: 'station',
+      r: function(d){
+        var num = +d.r.Exits;
+        return rScale(num)
+      },
+      fill: '#e74c3c',
+      stroke: "#222"
+    })
+
+  stationG.append("circle")
+    .attr("r", "15px")
+    .style("opacity", ".07")
+    .on('mouseover', mOverCall)
+    .on('mouseout', mOutCall)
+  test = locs;
+
+} //end draw
+
+function undraw(){
+
+  g.selectAll('.station')
+    .transition()
+    .duration(150)
+    .attr("r", function(d){
+        rScale.domain([0, max])
+        var num = +d.r.Exits;
+        return rScale(num)
+      })
+
+}
+
+function mOverCall(station, index){
+  redraw(station, index);
+  var other_svg = d3.select(".chordSVG");
+  fade(.1, other_svg)(station, index);
+}
+
+function mOutCall(station, index){
+  undraw();
+  var other_svg = d3.select(".chordSVG");
+  fade(1, other_svg)(station, index);
+}
+
+function redraw(station, index){
+
+  var station_id = station.id;
+
+  var max = d3.max(
+      _.map(ridership, function(place){
+        return place[station_id];
+      })
+    );
+
+  rScale.domain([0,max]);
+
+  d3.selectAll('.station').transition().duration(400).ease('cubic')
+    .attr("r", function(d, i){
+      var a = Number((d.id==station_id) ? (4) : (d.r[station_id]));
+      return rScale(a);
+    });
+
+
+}
+
+///draw chord diagram
+
+queue()
+.defer(d3.json, 'data/chord_ridership.json')
+.defer(d3.json, 'data/chordStations.json')
+.await(drawChord)
+
+function drawChord(err, ridership, stations){
+
+  var rows = ridership.rows.map(function(code) {
+    for(var i = 0; i < stations.length; i++) {
+      if(stations[i].code === code+"") return stations[i].name;
+    }
+  })
+
+  var data = ridership.data
+  data = data.slice(0, data.length-1);
+
+  data = data.map(function(row) {
+    return row.slice(0, row.length-1);
+  });
+
+  var display = d3.select("#chord");
+  display.append("div").attr("id", "chart");
+  var chord = d3.chart.chord("#chart");
+  chord.rows(rows)
+  chord.update(data);
+
+}
+
+
+
+function placeIt(d){
+  var t = projection([d.gtfs_longitude,d.gtfs_latitude]);
+  return "translate(" + t[0] + "," + t[1] + ")";
+}
+
+
+function zoomed() {
+  projection.translate(d3.event.translate).scale(d3.event.scale);
+  g.selectAll("path").attr("d", path);
+  g.selectAll(".stationG").attr("transform", placeIt);
+}
+
+</script>
