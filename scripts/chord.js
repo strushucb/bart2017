@@ -11,11 +11,11 @@ d3.chart.chord = function(container) {
 var trans = svg.transition().duration(750),
     delay = function(d, i) { return i * 50; };
 
-  var offset = 75;
+  var offset = 50;
   var w = parseInt(d3.select('#chord').style('width')) - offset,
       h = parseInt(d3.select('#chord').style('height')) - offset,
-      r0 = Math.min(w, h) * .35,
-      r1 = r0 * 1.15;
+      r0 = Math.min(w, h) * .30,
+      r1 = r0 * 1.2;
   var format = d3.format("3n")
 
   var fill = d3.scale.category20c();

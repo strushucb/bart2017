@@ -1,26 +1,39 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="style/style.css">
 <style>
   body{
     background: #111;
     color: #ddd;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+  }
+  text{
+    font-size: 14px;
   }
 </style>
-
-<link rel="stylesheet" href="style/style.css">
 
 <body>
   <div class="container">
 
-  <h1>5Chainz: BART station ridership</h1>
+  <h1>BART ridership</h1>
 
-    <div class="row" style="background-color: #111;">
-      <div class="col-lg-6" id="map"></div>
+    <div class="row">
+      <div class="col-lg-6" id="map">
+        <div class="tooltip"></div>
+      </div>
+      <div id="chord" class="col-lg-6"></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        When you highlight a station, the other circles resize to represent the relative sources of ridership to that station. Like if you scroll over Embarcadero, and 24th Street gets big, it means a lot of riders go from 24th St. to Embarcadero.
+      </div>
       <div id="chord" class="col-lg-6"></div>
     </div>
   </div>
-  <div class="tooltip"></div>
+
 </body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
@@ -52,15 +65,16 @@ var emerald = '#2ecc71',
 
 var width = parseInt(d3.select('#map').style('width'))
     , mapRatio = .8
-    // , height = width * mapRatio;
-    , height = 600
+    , height = 600;
 
 var colorScale = d3.scale.category20c();
 var routeColors = d3.scale.ordinal()
   .domain(d3.range(5))
-  .range(["#fdf057","#2aabe2","#e11e58","#f9a11d","#4fb848"])
+  .range(["#2c5aa0","#008000","#ffff00","#ff6600","#ff0000"])
 
-var lonlat = [-122.25, 37.77];
+var moveRoutes = [[1,1],[-2,4],[0,-1],[3,0],[-2,-2]];
+
+var lonlat = [-122.20, 37.77];
 
 var projection = d3.geo.mercator()
 //var projection = d3.geo.albers()
@@ -81,10 +95,12 @@ var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height);
 
+
 var g = svg.append("g")
     .attr("class", "mainG")
     .call(zoom);
 
+var topA = d3.select('#map').style('margin-top')
 
 var rScale = d3.scale.sqrt().range([1,10]);
 
@@ -127,11 +143,12 @@ function draw(err, bay, locs_raw, ride, routes_raw){
       .attr("class", "routes")
       .attr("transform",function(d,i){
         // if(i%2==0) return "translate(" + (i)*1.5 + ",0)"
-        return "translate(" + (i*2 -5) + "," + (i*1-2) + ")";
+        return "translate(" + moveRoutes[i][0] + "," + moveRoutes[i][1] + ")";
       })
       .attr("stroke", function(d,i){
         return routeColors(i)
       })
+      .attr("opacity",0.5)
       .attr("d", path);
 
 
@@ -163,7 +180,6 @@ function draw(err, bay, locs_raw, ride, routes_raw){
     d['r'] = r;
   });
 
-
   var stationG = g.selectAll('stations')
     .data(locs)
       .enter()
@@ -171,9 +187,12 @@ function draw(err, bay, locs_raw, ride, routes_raw){
     .attr("transform", placeIt)
     .attr("class", "stationG")
 
+
   stationG.append('circle')
     .attr({
-      class: 'station',
+      class: function(d,i){
+        return "station " + d.id;
+      },
       r: function(d){
         var num = +d.r.Exits;
         return rScale(num)
@@ -192,34 +211,47 @@ function draw(err, bay, locs_raw, ride, routes_raw){
     .on('mouseout', mOutCall)
   test = locs;
 
-  drawTooltip();
+  // drawTooltip();
 
 
 } //end draw
 
-function undraw(){
-
-  g.selectAll('.station')
-    .transition()
-    .duration(150)
-    .attr("r", function(d){
-        rScale.domain([0, max])
-        var num = +d.r.Exits;
-        return rScale(num)
-      })
-
-}
 
 function mOverCall(station, index){
+
   redraw(station, index);
   var other_svg = d3.select(".chordSVG");
   fade(.1, other_svg)(station, station.index);
 }
 
 function mOutCall(station, index){
+
   undraw();
   var other_svg = d3.select(".chordSVG");
   fade(1, other_svg)(station, index);
+}
+
+function undraw(){
+
+  g.selectAll('.station')
+    .transition()
+    .duration(300)
+    .ease('cubic')
+    .attr("r", function(d){
+      rScale.domain([0, max])
+      var num = +d.r.Exits;
+      return rScale(num);
+    })
+    .attr("fill", function(d,i){
+      return colorScale(d.index);
+    })
+
+    d3.select('.tooltip')
+      .transition()
+      .duration(300)
+      .ease('cubic')
+      .style("opacity","0")
+
 }
 
 function redraw(station, index){
@@ -234,12 +266,39 @@ function redraw(station, index){
 
   rScale.domain([0,max]);
 
+  d3.select(".tooltip")
+    .transition()
+    .duration(100)
+    .style("opacity", .8);
+
+  d3.select(".tooltip")
+    .html( 
+      station.name + "<br>"
+      + "Total Exits: "+ station.r.Exits + "<br>"
+    )
+    .style("left", 
+      25+projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[0]  
+      + "px")
+    .style("top", 
+      -25 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[1]
+      + "px")
+
   d3.selectAll('.station').transition().duration(400).ease('cubic')
     .attr("r", function(d, i){
-      var a = Number((d.id==station_id) ? (4) : (d.r[station_id]));
-      return rScale(a);
+      if(d.id!==station_id) return rScale(d.r[station_id])
+      return 18;
+    })
+    .attr("fill", function(d,i){
+      if(d.id==station_id) return "#F13F3F";
+      else return colorScale(d.index);
+    })
+    .transition()
+    .duration(500)
+    .ease('bounce')
+    .attr("r", function(d,i){
+      if(d.id!==station_id) return rScale(d.r[station_id])
+      return 12;
     });
-
 
 }
 
@@ -296,7 +355,6 @@ function drawTooltip(){
     .on("mousemove", function(d) { 
       tooltip.transition().duration(100)
         .style("opacity", .7)
-        console.log("LOG:","firing");
       tooltip.html( 
            d.name + "<br>"
           + "Total Exits: "+ d.r.Exits + "<br>"

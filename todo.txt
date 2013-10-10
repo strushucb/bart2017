@@ -1,12 +1,14 @@
-color whichever one is selected
+a button to switch between entries and exits
 instructions
-get the correct colors for the bart lines
-do the translations manually (i.e. richmond-whatever moved two pixels left, etc.)
-put an arc chart in the tooltip
-tooltip
+put some transition on the mouseout
+put total exits and total entries as properties on the main object, not on the "r" property
 
+ADDING SWITCH CAPABILITY
+rename the "r" property
+change the tooltip and undraw references
+create a "EntriesVsExits" function. it loads alternate ridership files and redoes the "locs" and also redefines the tooltip to say "entries" instead of "exits"
+create a "chord" entries file and a locs entries file
 
+can you just create the locs as a json on the disk and load it without need for the ridership file?
 
-
-
-
+make the div on the tooltip into a little arrow
