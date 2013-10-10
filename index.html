@@ -101,8 +101,9 @@ var g = svg.append("g")
     .call(zoom);
 
 var topA = d3.select('#map').style('margin-top')
-
+var tooltip =   d3.select(".tooltip");
 var rScale = d3.scale.sqrt().range([1,10]);
+var chordSVG = d3.select(".chordSVG");
 
 g.append("rect")
     .attr("class", "background")
@@ -111,23 +112,21 @@ g.append("rect")
 
 queue()
   .defer(d3.json, 'data/bayareaTOPO.json')
-  .defer(d3.csv, 'data/bart_stations.csv')
-  .defer(d3.csv, 'data/ridership.csv')
+  .defer(d3.json, 'data/locs.json')
   .defer(d3.json,'data/lasers.json')
-  .await(draw)
+  .await(setup)
 
 var locs;
 var ridership = {}
 var max;
 var map;
 
-function draw(err, bay, locs_raw, ride, routes_raw){
+function setup(err, bay, locs_raw, routes_raw){
 //bayarea
   var water = topojson.feature(bay, bay.objects.bayareaGEO);
   var routes = topojson.feature(routes_raw, routes_raw.objects.routes)
 
-  console.log("LOG:",routes);
-  map = routes
+  map = routes;
 
   locs = locs_raw;
 
@@ -142,7 +141,6 @@ function draw(err, bay, locs_raw, ride, routes_raw){
       .append("path")
       .attr("class", "routes")
       .attr("transform",function(d,i){
-        // if(i%2==0) return "translate(" + (i)*1.5 + ",0)"
         return "translate(" + moveRoutes[i][0] + "," + moveRoutes[i][1] + ")";
       })
       .attr("stroke", function(d,i){
@@ -153,31 +151,18 @@ function draw(err, bay, locs_raw, ride, routes_raw){
 
 
 //bart stations
-
-  ride.forEach(function(place){
-    d3.keys(place).forEach(function(key){
-      if(key!=='name') place[key] = +place[key];
-    })
-
-    ridership[place.name] = place;
-  });
-
-  max = d3.max(
-      _.map(ridership, function(place){
-        return d3.max(_.values(place));
-      })
-    )
-
-  rScale.domain([0, max])
-
   locs.forEach(function(d, i){
     d.gtfs_latitude = +d.gtfs_latitude;
     d.gtfs_longitude = +d.gtfs_longitude;
     d.index = +d.index;
-    //now add the ridership in
-    var place = d.id;
-    var r = ridership[place];
-    d['r'] = r;
+    for(var source in d.entries){
+      d.entries[source] = +d.entries[source]
+    }
+    for(var source in d.exits){
+      d.exits[source] = +d.exits[source]
+    }
+    d.total_exits = +d.total_exits;
+    d.total_entries = +d.total_entries;
   });
 
   var stationG = g.selectAll('stations')
@@ -185,120 +170,141 @@ function draw(err, bay, locs_raw, ride, routes_raw){
       .enter()
     .append("g")
     .attr("transform", placeIt)
-    .attr("class", "stationG")
+    .attr("class", "stationG");
 
+    draw(stationG, 'entries');
+
+} //end draw
+
+function draw(stationG, which){
+
+  g.selectAll('circle').remove();
+
+  //prep scale
+  var max = d3.max(
+      _.map(locs, function(d){
+        var dMax = (which=='entries') ? d.total_entries : d.total_exits;
+        return dMax;
+      })
+    );
+
+  rScale.domain([0, max]);
 
   stationG.append('circle')
     .attr({
-      class: function(d,i){
-        return "station " + d.id;
-      },
+      class: 'station',
       r: function(d){
-        var num = +d.r.Exits;
-        return rScale(num)
+        var num = (which=='entries') ? d.total_entries : d.total_exits;
+        return rScale(num);
       },
-      fill: function(d,i){
+      fill: function(d){
         return colorScale(d.index)
-      },
-      // stroke: "#222"
-    })
+      }
+    });
 
   stationG.append("circle")
     .attr("r", "15px")
     .style("opacity", ".07")
     .attr("fill","#ccc")
-    .on('mouseover', mOverCall)
-    .on('mouseout', mOutCall)
-  test = locs;
-
-  // drawTooltip();
-
-
-} //end draw
-
-
-function mOverCall(station, index){
-
-  redraw(station, index);
-  var other_svg = d3.select(".chordSVG");
-  fade(.1, other_svg)(station, station.index);
-}
-
-function mOutCall(station, index){
-
-  undraw();
-  var other_svg = d3.select(".chordSVG");
-  fade(1, other_svg)(station, index);
-}
-
-function undraw(){
-
-  g.selectAll('.station')
-    .transition()
-    .duration(300)
-    .ease('cubic')
-    .attr("r", function(d){
-      rScale.domain([0, max])
-      var num = +d.r.Exits;
-      return rScale(num);
+    .on('mouseover', function(d){
+      return mouseOverCall(d, which)
     })
-    .attr("fill", function(d,i){
-      return colorScale(d.index);
+    .on('mouseout', function(d){
+      return mouseOutCall(d, which)
     })
 
-    d3.select('.tooltip')
-      .transition()
-      .duration(300)
-      .ease('cubic')
-      .style("opacity","0")
-
 }
 
-function redraw(station, index){
+function mouseOverCall(station, which){
 
-  var station_id = station.id;
+  redraw(station, which)
+  fade(.1, chordSVG)(station, station.index);
+}
 
+function mouseOutCall(station, which){
+  undraw(which);
+  fade(1, chordSVG)(station, station.index);
+}
+
+function redraw(station, which){
+
+  // tooltip
+  //   .transition()
+  //   .duration(100)
+  //   .style("opacity", .8);
+
+  // tooltip
+  //   .html( 
+  //     station.name + "<br>"
+  //     + "Total Entries: " + station.total_entries + "<br>"
+  //   )
+  //   .style("left", 
+  //     25+projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[0]  
+  //     + "px")
+  //   .style("top", 
+  //     -25 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[1]
+  //     + "px")
+
+  //prep scale
   var max = d3.max(
-      _.map(ridership, function(place){
-        return place[station_id];
+      _.map(locs, function(d){
+        return d[which][station.id];
       })
     );
 
-  rScale.domain([0,max]);
+  rScale.domain([0, max]);
 
-  d3.select(".tooltip")
+  d3.selectAll('.station')
     .transition()
-    .duration(100)
-    .style("opacity", .8);
-
-  d3.select(".tooltip")
-    .html( 
-      station.name + "<br>"
-      + "Total Exits: "+ station.r.Exits + "<br>"
-    )
-    .style("left", 
-      25+projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[0]  
-      + "px")
-    .style("top", 
-      -25 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[1]
-      + "px")
-
-  d3.selectAll('.station').transition().duration(400).ease('cubic')
+    .duration(400)
+    .ease('cubic')
     .attr("r", function(d, i){
-      if(d.id!==station_id) return rScale(d.r[station_id])
+      var num = d[which][station.id];
+      if(d.id!==station.id) return rScale(num);
       return 18;
     })
     .attr("fill", function(d,i){
-      if(d.id==station_id) return "#F13F3F";
+      if(d.id==station.id) return "#F13F3F";
       else return colorScale(d.index);
     })
     .transition()
     .duration(500)
     .ease('bounce')
     .attr("r", function(d,i){
-      if(d.id!==station_id) return rScale(d.r[station_id])
+      if(d.id!==station.id) return rScale(d[which][station.id])
       return 12;
     });
+
+
+}
+
+function undraw(which){
+
+  var max = d3.max(
+      _.map(locs, function(d){
+        return d.total_entries;
+      })
+    );
+
+  rScale.domain([0, max]);
+
+  g.selectAll('.station')
+    .transition()
+    .duration(300)
+    .ease('cubic')
+    .attr("r", function(d){
+      if(which=='entries') return rScale(d.total_entries);
+      if(which='exits') return rScale(d.total_exits);
+    })
+    .attr("fill", function(d,i){
+      return colorScale(d.index);
+    })
+
+    tooltip
+      .transition()
+      .duration(300)
+      .ease('cubic')
+      .style("opacity","0")
 
 }
 
