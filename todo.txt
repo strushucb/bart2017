@@ -1,17 +1,6 @@
-a button to switch between entries and exits
-instructions
-put some transition on the mouseout
-put total exits and total entries as properties on the main object, not on the "r" property
-
-ADDING SWITCH CAPABILITY
-make a new data set for the chord diagram
-make the chord diagram swap out its data
-add a button
-redo the chord diagram's communication with the map to account for the new functions
-make which a global variable
-fix what ever is wrong with the rescaling
-
 what if they're horizontal bars instead of circles?
 what if i used superformulas to tween the shapes?
 
-what if there were a scroll mode and a brush mode? on the brush mode you could select a bunch of locations and see all their chord diagrams together.
+change the chord diagram labels to be little html things so you can have line breaks!
+
+flatUI radio buttons
