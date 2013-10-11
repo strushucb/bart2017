@@ -22,7 +22,7 @@
   <h1 style="font-size: 64px">BART ridership</h1>
     <div class="row">
       <div class="col-lg-6" id="map">
-        <div class="tooltip"></div>
+      <div class="tooltip"></div>
       </div>
       <div id="chord" class="col-lg-6"></div>
     </div>
@@ -31,6 +31,7 @@
         When you highlight a station, the circles resize and the bands fade to represent the ridership between that station and the others. The buttons decide if we see ridership <em>to</em> or <em>from</em> the highlighted station.
         Like if you scroll over Embarcadero, and 24th Street gets big, it means a lot of riders go from 24th St. to Embarcadero.
       </div>
+      <div class="col-lg-6">Data from June 2013 (the month before the strike).</div>
       <form name="myForm">
         <input type="radio" name="ToOrFrom" onclick="switcher('entries')" checked >Entries
         <input type="radio" name="ToOrFrom" onclick="switcher('exits')">Exits
@@ -95,15 +96,15 @@ var zoom = d3.behavior.zoom()
     .scaleExtent([49004*.8, 3.5*49004])
     .on("zoom", zoomed);
 
-var svg = d3.select("#map").append("svg")
+var tooltip = d3.select(".tooltip")
+
+var svg = d3.select("#map").append("svg", ".tooltip")
     .attr("width", width)
     .attr("height", height);
 
 var g = svg.append("g")
     .attr("class", "mainG")
-    .call(zoom);
-
-var tooltip =   d3.select(".tooltip");
+    // .call(zoom);
 
 var tooltip_arrow = tooltip.append("div")
   .attr("class", "tooltip-arrow")
@@ -113,7 +114,7 @@ var tooltip_inner = tooltip.append("div")
 
 var rScale = d3.scale.sqrt().range([1,10]);
 
-var chordSVG = d3.select(".chordSVG");
+var chordSVG;
 
 g.append("rect")
     .attr("class", "background")
@@ -139,6 +140,8 @@ function switcher(new_which){
   draw();
   setupChord();
 }
+
+var format = d3.format('0,000');
 
 function setup(err, bay, locs_raw, routes_raw){
 //bayarea
@@ -220,6 +223,9 @@ function draw(){
       },
       fill: function(d){
         return colorScale(d.index)
+      },
+      index: function(d){
+        return d.index;
       }
     });
 
@@ -239,12 +245,12 @@ function draw(){
 function mouseOverCall(station){
 
   redraw(station)
-  fade(.1, chordSVG)(station, station.index);
+  fade(.1, chordSVG)(station.index);
 }
 
 function mouseOutCall(station){
   undraw();
-  fade(1, chordSVG)(station, station.index);
+  fade(1, chordSVG)(station.index);
 }
 
 function redraw(station){
@@ -254,10 +260,10 @@ function redraw(station){
     .duration(150)
     .ease("cubic")
     .style("left", 
-      -100 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[0]  
+      -105 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[0]  
       + "px")
     .style("top", 
-      -25 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[1]
+      -20 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[1]
       + "px")
     .transition()
     .duration(80)
@@ -268,7 +274,7 @@ function redraw(station){
     .html( 
       station.name + "</div><br>"
       + 
-      ((which=="entries") ? "Total Entries: " + station.total_entries : "Total Exits: " + station.total_exits)
+      ((which=="entries") ? "Total Entries: " + format(station.total_entries) : "Total Exits: " + format(station.total_exits))
       + 
       "<div style='position:relative; width: 100%; height: 3px; margin-top: 3px; background-color:" + colorScale(station.index) + ";'></div>"
     )
@@ -283,26 +289,27 @@ function redraw(station){
 
   rScale.domain([0, max]);
 
+
   d3.selectAll('.station')
+    .filter(function(d){return d.id !== station.id; })
     .transition()
     .duration(300)
     .ease('cubic')
     .attr("r", function(d, i){
       var num = d[which][station.id];
-      if(d.id!==station.id) return rScale(num);
-      return 18;
+      return rScale(num);
     })
-    .attr("fill", function(d,i){
-      if(d.id==station.id) return "#F13F3F";
-      else return colorScale(d.index);
-    })
+
+  d3.select('circle[index="' + station.index + '"]')
+    .transition('linear')
+    .duration(300)
+    .ease('cubic')
+    .attr("r", "18px")
     .transition()
     .duration(425)
     .ease('bounce')
-    .attr("r", function(d,i){
-      if(d.id!==station.id) return rScale(d[which][station.id])
-      return 12;
-    });
+    .attr("r", "12px");
+
 }
 
 function undraw(){
@@ -379,7 +386,7 @@ function drawChord(err, ridership, stations){
     .attr("id", "chart");
 
   var chord = d3.chart.chord("#chart");
-  
+
   chord.rows(rows)
   chord.update(data);
 
