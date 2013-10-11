@@ -9,6 +9,8 @@
     color: #ddd;
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
+    padding-top: 35px;
+
   }
   text{
     font-size: 14px;
@@ -17,9 +19,7 @@
 
 <body>
   <div class="container">
-
-  <h1>BART ridership</h1>
-
+  <h1 style="font-size: 64px">BART ridership</h1>
     <div class="row">
       <div class="col-lg-6" id="map">
         <div class="tooltip"></div>
@@ -44,9 +44,7 @@
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 <script src="scripts/chord.js"></script>
-<!-- <script src="style/Flat-UI-master/js/jquery-2.0.3.min.js"></script>
-<script src="style/Flat-UI-master/js/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="style/Flat-UI-master/js/flatui-radio.js"></script> -->
+
 
 <!-- begin now -->
 <script>
@@ -105,9 +103,16 @@ var g = svg.append("g")
     .attr("class", "mainG")
     .call(zoom);
 
-var topA = d3.select('#map').style('margin-top')
 var tooltip =   d3.select(".tooltip");
+
+var tooltip_arrow = tooltip.append("div")
+  .attr("class", "tooltip-arrow")
+
+var tooltip_inner = tooltip.append("div")
+  .attr("class","tooltip-inner")
+
 var rScale = d3.scale.sqrt().range([1,10]);
+
 var chordSVG = d3.select(".chordSVG");
 
 g.append("rect")
@@ -219,9 +224,9 @@ function draw(){
     });
 
   stationG.append("circle")
+    .attr("class","station-selector")
     .attr("r", "15px")
-    .style("opacity", ".07")
-    .attr("fill","#ccc")
+    .style("opacity", ".2")
     .on('mouseover', function(d){
       return mouseOverCall(d)
     })
@@ -244,22 +249,30 @@ function mouseOutCall(station){
 
 function redraw(station){
 
-  // tooltip
-  //   .transition()
-  //   .duration(100)
-  //   .style("opacity", .8);
+  tooltip
+    .transition()
+    .duration(150)
+    .ease("cubic")
+    .style("left", 
+      -100 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[0]  
+      + "px")
+    .style("top", 
+      -25 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[1]
+      + "px")
+    .transition()
+    .duration(80)
+    .ease('linear')
+    .style("opacity", .8)
 
-  // tooltip
-  //   .html( 
-  //     station.name + "<br>"
-  //     + "Total Entries: " + station.total_entries + "<br>"
-  //   )
-  //   .style("left", 
-  //     25+projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[0]  
-  //     + "px")
-  //   .style("top", 
-  //     -25 + projection([Number(station.gtfs_longitude),Number(station.gtfs_latitude)])[1]
-  //     + "px")
+  tooltip_inner
+    .html( 
+      station.name + "</div><br>"
+      + 
+      ((which=="entries") ? "Total Entries: " + station.total_entries : "Total Exits: " + station.total_exits)
+      + 
+      "<div style='position:relative; width: 100%; height: 3px; margin-top: 3px; background-color:" + colorScale(station.index) + ";'></div>"
+    )
+
 
   //prep scale
   var max = d3.max(
@@ -389,28 +402,6 @@ function zoomed() {
   g.selectAll(".stationG").attr("transform", placeIt);
 }
 
-function drawTooltip(){
-  console.log('firing drawTooltip')
-  var tooltip = d3.select(".tooltip");
-  d3.selectAll('.stationG')
-    .on("mousemove", function(d) { 
-      tooltip.transition().duration(100)
-        .style("opacity", .7)
-      tooltip.html( 
-           d.name + "<br>"
-          + "Total Exits: "+ d.r.Exits + "<br>"
-        )
-        .style("left", (d3.event.pageX + 20)  + "px")
-        .style("top", (d3.event.pageY - 50) + "px");     
-    })
-    .on("mouseout", function(d) {
-      d3.select(this).transition().duration()
-          .attr("stroke", "none")
-
-      tooltip.transition().duration(200)
-        .style("opacity", 0);
-    });
-} //end of drawtooltip
 
 
 </script>
