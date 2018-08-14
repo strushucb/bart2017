@@ -24,6 +24,15 @@
   font-size: 12px;
 }
 
+.container {
+    max-width: 1500px;
+    width: 1400px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
 .number {
   font-weight: 700;
 }
@@ -33,9 +42,11 @@
 
 #chord{
   height: 600px;
+  width: 600px;    
 }
 
 #chart{
+  height: 600px;
   border-radius: 100px;
   background: #111;
 }
@@ -44,7 +55,7 @@
   fill: white;
 }
 
-h1{
+h3{
   font-color: #eee;
 }
 .chordBlock{
