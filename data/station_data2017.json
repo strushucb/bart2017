@@ -1,0 +1,150 @@
+{
+    "East Hills": {
+       "Dublin/Pleasanton": {
+          "Total Exits": 97310
+       },
+       "Pleasant Hill": {
+          "Total Exits": 90500
+       },
+       "Walnut Creek": {
+          "Total Exits": 85359
+       },
+       "Pittsburg/Bay Point": {
+          "Total Exits": 78406
+       },
+       "West Dublin/Pleasanton": {
+          "Total Exits": 43882
+       },
+       "Lafayette": {
+          "Total Exits": 42949
+       },
+       "Orinda": {
+          "Total Exits": 36251
+       },
+       "Castro Valley": {
+          "Total Exits": 34052
+       }
+    },
+    "North East Bay": {
+       "Berkeley": {
+          "Total Exits": 153201
+       },
+       "El Cerrito Del Norte": {
+          "Total Exits": 105001
+       },
+       "Concord": {
+          "Total Exits": 72819
+       },
+       "Ashby": {
+          "Total Exits": 63621
+       },
+       "El Cerrito Plaza": {
+          "Total Exits": 59808
+       },
+       "North Berkeley": {
+          "Total Exits": 54647
+       },
+       "Colma": {
+          "Total Exits": 51762
+       },
+       "Richmond": {
+          "Total Exits": 50013
+       },
+       "North Concord": {
+          "Total Exits": 31959
+       }
+    },
+    "Oakland": {
+       "12th Street / Oakland City Center": {
+          "Total Exits": 165259
+       },
+       "19th Street Oakland": {
+          "Total Exits": 159939
+       },
+       "MacArthur": {
+          "Total Exits": 110411
+       },
+       "Fruitvale": {
+          "Total Exits": 98509
+       },
+       "West Oakland": {
+          "Total Exits": 86044
+       },
+       "Lake Merritt": {
+          "Total Exits": 85281
+       },
+       "Coliseum": {
+          "Total Exits": 78354
+       },
+       "Rockridge": {
+          "Total Exits": 70173
+       },
+       "Oakland International Airport": {
+          "Total Exits": 18040
+       }
+    },
+    "San Francisco": {
+       "Embarcadero": {
+          "Total Exits": 575478
+       },
+       "Montgomery Street": {
+          "Total Exits": 541378
+       },
+       "Powell Street": {
+          "Total Exits": 325860
+       },
+       "Civic Center": {
+          "Total Exits": 278510
+       },
+       "16th Street Mission": {
+          "Total Exits": 149234
+       },
+       "24th Street Mission": {
+          "Total Exits": 145662
+       },
+       "Balboa Park": {
+          "Total Exits": 120740
+       },
+       "Daly City": {
+          "Total Exits": 105497
+       },
+       "Glen Park": {
+          "Total Exits": 86381
+       },
+       "San Francisco International Airport": {
+          "Total Exits": 76322
+       },
+       "Millbrae": {
+          "Total Exits": 76247
+       },
+       "Bayfair": {
+          "Total Exits": 68401
+       },
+       "San Bruno": {
+          "Total Exits": 44972
+       },
+       "South San Francisco": {
+          "Total Exits": 42962
+       }
+    },
+    "South East Bay": {
+       "Fremont": {
+          "Total Exits": 90110
+       },
+       "San Leandro": {
+          "Total Exits": 74820
+       },
+       "Hayward": {
+          "Total Exits": 59103
+       },
+       "Union City": {
+          "Total Exits": 58307
+       },
+       "South Hayward": {
+          "Total Exits": 35604
+       },
+       "Warm Springs": {
+          "Total Exits": 27191
+       }
+    }
+}
