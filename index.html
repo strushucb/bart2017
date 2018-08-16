@@ -2,9 +2,24 @@
 <script src="https://code.highcharts.com/modules/heatmap.js"></script>
 <script src="https://code.highcharts.com/modules/treemap.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<div id="container" style="height: 100vh; width: 90vw;"></div>
+<div id="container"></div>
+
+<style>
+    @import 'https://code.highcharts.com/css/highcharts.css';
+
+#container {
+	height: 100vh;
+	width: 95vw;
+	margin: 0 auto;
+}
+
+</style>
+
 
 <script>
+Highcharts.setOptions({
+    colors: ['#550808', '#0a156c', '#08480d', '#6f590e', '#5c1c43', '#194c55', '#6c5252']
+});    
 
 $.getJSON('data/station_data2017.json', function (data) {
 
@@ -29,7 +44,7 @@ $.getJSON('data/station_data2017.json', function (data) {
             regionP = {
                 id: 'id_' + regionI,
                 name: region,
-                color: Highcharts.getOptions().colors[regionI+4]
+                color: Highcharts.getOptions().colors[regionI]
             };
             stationI = 0;
             for (station in data[region]) {
@@ -83,16 +98,29 @@ $.getJSON('data/station_data2017.json', function (data) {
                     style: {
                         fontSize: '20px',
                         fontWeight: 'bold'
-                    }                    
+                    }
+                },
+                colorVariation: {
+                    key: 'brightness',
+                    to: 0.5
                 },
                 borderWidth: 5
             },{
                 level: 2,
                 dataLabels: {
                     enabled: true,
+                    align: 'center',
                     style: {
-                        fontSize: '12px'
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        align: 'center',
+                        color: 'white'
+
                     }                    
+                },
+                colorVariation: {
+                    key: 'brightness',
+                    to: 0.5
                 },
                 borderWidth: 3
             }],
