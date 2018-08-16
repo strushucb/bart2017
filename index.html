@@ -2,7 +2,7 @@
 <script src="https://code.highcharts.com/modules/heatmap.js"></script>
 <script src="https://code.highcharts.com/modules/treemap.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<div id="container" style="height: 700px; width: 1300px"></div>
+<div id="container" style="height: 100vh; width: 90vw;"></div>
 
 <script>
 
@@ -67,12 +67,13 @@ $.getJSON('data/station_data2017.json', function (data) {
         series: [{
             type: 'treemap',
             layoutAlgorithm: 'squarified',
-            allowDrillToNode: false,
+            allowDrillToNode: true,
             animationLimit: 1000,
             dataLabels: {
-                enabled: true
+                allowOverlap: true,
+                enabled: false
             },
-            levelIsConstant: false,
+            levelIsConstant: true,
             levels: [{
                 level: 1,
                 dataLabels: {
@@ -101,7 +102,11 @@ $.getJSON('data/station_data2017.json', function (data) {
             text: 'The size of the square indicates proportion of rider exits in that region of the Bay Area or at that station. Scroll over station name to see total rider exits from that station in 2017. Source: BART'
         },
         title: {
-            text: 'BART Ridership: Total Exits per Station in 2017'
+            text: 'BART Ridership: Total Exits per Station in 2017',
+            style: {
+                fontSize: '20px',
+                fontWeight: 'bold'
+            }   
         }
     });
 
