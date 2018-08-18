@@ -1,28 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/heatmap.js"></script>
 <script src="https://code.highcharts.com/modules/treemap.js"></script>
+<script src="https://code.highcharts.com/modules/pattern-fill.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<div id="container"></div>
-
 <style>
-    @import 'https://code.highcharts.com/css/highcharts.css';
 
-#container {
-	height: 100vh;
-	width: 95vw;
-	margin: 0 auto;
-}
+
+    body{
+        background: #111;
+        color: #ddd;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+    }
+    
+    tr, td {
+        text-align: center;
+        align-content: center;
+        vertical-align: middle;
+        padding: 10px;
+    }
+    
+    #container {
+        height: 85vh;
+        width: 95vw;
+        margin: 0 auto;
+    }
+
+    #map {
+        height: 30vh;
+        width: 30vw;
+        margin: 0 auto;
+    }
 
 </style>
+
+<body>
+   <h2>BART Ridership: Total Exits per Station in 2017</h2>
+    <h3>The size of the square indicates proportion of rider exits in that region of the Bay Area or at that station. Scroll over station name to see total rider exits from that station in 2017. Source: BART</h3>
+        <table>
+          <tr>    
+            <td id="container"></td>
+              </tr>
+          <tr>
+            <td id="map"><img width= 33% src="data/system-map.gif"/></td>
+          </tr>
+        </table>
+</body>
+
 
 
 <script>
 Highcharts.setOptions({
-    colors: ['#550808', '#0a156c', '#08480d', '#6f590e', '#5c1c43', '#194c55', '#6c5252']
+    colors: [{
+                pattern: {
+                    path: {
+                        d: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
+                        strokeWidth: 3
+                    },
+                    width: 10,
+                    height: 10,
+                    opacity: 0.4
+                }
+            }, '#0a156c', '#08480d', '#6f590e', '#5c1c43', '#194c55', '#6c5252']
 });    
 
 $.getJSON('data/station_data2017.json', function (data) {
 
+    var color_cats = {
+        "Urban": "#f75959",
+        "Suburban":"#c6b53c",
+        "Hills": {
+                pattern: {
+                    path: {
+                        d: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
+                        strokeWidth: 5
+                    },
+                    width: 10,
+                    height: 10,
+                    opacity: 1,
+                    color: "rgb(198, 181, 60)"
+                }
+            }
+    }
+    
+    var color_regs = {
+        "San Francisco": "#000000",
+        "Oakland":"#000000",
+        "East Bay - North":"#000000",
+        "East Bay - South":"#000000",
+        "East Hills": "#000000"
+    }
+
+    
     var points = [],
         regionP,
         regionVal,
@@ -44,36 +117,63 @@ $.getJSON('data/station_data2017.json', function (data) {
             regionP = {
                 id: 'id_' + regionI,
                 name: region,
-                color: Highcharts.getOptions().colors[regionI]
+                color: color_regs[region]
             };
             stationI = 0;
-            for (station in data[region]) {
+            for (station in data[region]) {                
+                var mycolor;
                 if (data[region].hasOwnProperty(station)) {
+                    var r,g,b,a;
+                    if(data[region][station]["Class"] == 'Urban'){
+                        r = 200;
+                        g = 20;
+                        b = 20;
+                        a = +data[region][station]["Total Exits"]/400000 + .5;
+                        mycolor = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+                    }
+                    if(data[region][station]["Class"] == 'Suburban'){
+                        r = 198; //198, 181, 60
+                        g = 181;
+                        b = 60;
+                        a = +data[region][station]["Total Exits"]/150000 + .1;
+                        mycolor = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+                    }
+                    if(data[region][station]["Class"] == 'Hills'){
+                        mycolor = { 
+                            pattern: {
+                                path: {
+                                    d: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
+                                    strokeWidth: 5
+                                },
+                                width: 10,
+                                height: 10,
+                                opacity: +data[region][station]["Total Exits"]/150000 + .1,
+                                color: "#c6b53c"
+                            }
+                        };
+                    }
                     stationP = {
                         id: regionP.id + '_' + stationI,
                         name: station,
-                        parent: regionP.id
+                        parent: regionP.id,
+                        color: mycolor
                     };
+                    console.log(stationP.color);
                     points.push(stationP);
                     exitsI = 0;
-                    for (exits in data[region][station]) {
-                        if (data[region][station].hasOwnProperty(exits)) {
-                            exitsP = {
-                                id: stationP.id + '_' + exitsI,
-                                name: station,
-                                parent: stationP.id,
-                                value: Math.round(+data[region][station][exits])
-                            };
-                            regionVal += exitsP.value;
-                            points.push(exitsP);
-                            exitsI = exitsI + 1;
-                        }
-                    }
+                    exitsP = {
+                        id: stationP.id + '_' + exitsI,
+                        name: station+" %",
+                        parent: stationP.id,
+                        value: +data[region][station]["Total Exits"]
+                    };
+                    regionVal += exitsP.value;
+                    points.push(exitsP);
+                    exitsI = exitsI + 1;                    
                     stationI = stationI + 1;
                 }
             }
             regionP.value = regionVal;
-            console.log(regionP);
             points.push(regionP);
             regionI = regionI + 1;
         }
@@ -86,27 +186,27 @@ $.getJSON('data/station_data2017.json', function (data) {
             animationLimit: 1000,
             dataLabels: {
                 allowOverlap: true,
-                enabled: false
+                enabled: false,
             },
             levelIsConstant: true,
             levels: [{
                 level: 1,
+                borderWidth: 5,
+                borderColor: '#FFFFFF',
                 dataLabels: {
                     enabled: true,
                     align: 'left',
                     verticalAlign: 'top',
                     style: {
                         fontSize: '20px',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        color: '#EEEEEE'
                     }
                 },
-                colorVariation: {
-                    key: 'brightness',
-                    to: 0.5
-                },
-                borderWidth: 5
             },{
                 level: 2,
+                borderWidth: 1,
+                borderColor: '#000000',
                 dataLabels: {
                     enabled: true,
                     align: 'center',
@@ -114,27 +214,30 @@ $.getJSON('data/station_data2017.json', function (data) {
                         fontSize: '12px',
                         fontWeight: 'bold',
                         align: 'center',
-                        color: 'white'
-
                     }                    
                 },
-                colorVariation: {
-                    key: 'brightness',
-                    to: 0.5
+            },{
+                level: 3,
+                dataLabels: {
+                    enabled: false,
+                    
                 },
-                borderWidth: 3
             }],
             data: points
         }],
         subtitle: {
-            text: 'The size of the square indicates proportion of rider exits in that region of the Bay Area or at that station. Scroll over station name to see total rider exits from that station in 2017. Source: BART'
+            floating: true,
+            text: ''
         },
         title: {
-            text: 'BART Ridership: Total Exits per Station in 2017',
-            style: {
-                fontSize: '20px',
-                fontWeight: 'bold'
-            }   
+            floating: true,
+            text: ''
+        },
+        tooltip: {
+            pointFormatter: function () { 
+                var percent = Math.round(this.value/5006329 * 100);
+                return '<b>'+this.name+'</b><br>  ' + this.value.toLocaleString() + ' exits<br>  (' + percent + '% of all exits)';  
+            }
         }
     });
 
