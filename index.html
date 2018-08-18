@@ -12,7 +12,7 @@
 
     body{
         background: #111;
-        color: #ddd;
+        color: #FFF;
         font-family: 'Open Sans', sans-serif;
         font-size: 14px;
     }
@@ -22,6 +22,9 @@
         align-content: center;
         vertical-align: middle;
         padding: 10px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+
     }
     
     #container {
@@ -39,13 +42,29 @@
 </style>
 
 <body>
-   <h2>BART Ridership: Total Exits per Station in 2017</h2>
-    <h3>The size of the square indicates proportion of rider exits in that region of the Bay Area or at that station. Scroll over station name to see total rider exits from that station in 2017. Source: BART</h3>
-        <table>
-          <tr>    
+   <h2>BART Ridership: Daily Ridership per Station in 2017</h2>
+    <h3>The size of the square indicates proportion of rider exits or entries in that region or station. Scroll over station name to see the daily average for entries or exits from that station in 2017. Use the buttons below the chart to switch between entries or exits. Source: <a = href="https://www.bart.gov/about/reports/ridership">BART</a></h3>
+    <table style="color:#FFFFFF; text-shadow: 0 0 3px #000000, 0 0 5px #999999">
+            <tr>
+                <td background="data/urban.PNG"><b>Urban Areas</b></td>
+                <td background="data/suburban.PNG"><b>Suburban Areas</b></td>
+                <td background="data/eastofhills.PNG"><b>Suburban Areas "East of the Hills"</b></td>
+                <td>  
+                    <form name="myForm">
+                    <input type="radio" name="ToOrFrom" onclick="switcher('Total Exits')" checked >Exits per Day
+                    <input type="radio" name="ToOrFrom" onclick="switcher('Total Entries')">Entries per Day
+                    </form>
+                </td>
+            </tr>
+    </table>
+            
+    <table>
+            
+            <tr>    
             <td id="container"></td>
               </tr>
-          <tr>
+            <tr><td>Note: Antioch and Pittsburg Center Stations were not operational in 2017. </td></tr>
+          <tr>  
             <td id="map"><img width= 33% src="data/system-map.gif"/></td>
           </tr>
         </table>
@@ -54,38 +73,6 @@
 
 
 <script>
-Highcharts.setOptions({
-    colors: [{
-                pattern: {
-                    path: {
-                        d: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
-                        strokeWidth: 3
-                    },
-                    width: 10,
-                    height: 10,
-                    opacity: 0.4
-                }
-            }, '#0a156c', '#08480d', '#6f590e', '#5c1c43', '#194c55', '#6c5252']
-});    
-
-$.getJSON('data/station_data2017.json', function (data) {
-
-    var color_cats = {
-        "Urban": "#f75959",
-        "Suburban":"#c6b53c",
-        "Hills": {
-                pattern: {
-                    path: {
-                        d: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
-                        strokeWidth: 5
-                    },
-                    width: 10,
-                    height: 10,
-                    opacity: 1,
-                    color: "rgb(198, 181, 60)"
-                }
-            }
-    }
     
     var color_regs = {
         "San Francisco": "#000000",
@@ -94,152 +81,179 @@ $.getJSON('data/station_data2017.json', function (data) {
         "East Bay - South":"#000000",
         "East Hills": "#000000"
     }
+    
+    var whichTotal = {
+        "Total Exits" : 10122862,
+        "Total Entries" : 10122862
+    }
 
     
-    var points = [],
-        regionP,
-        regionVal,
-        regionI = 0,
-        stationP,
-        stationI,
-        exitsP,
-        exitsI,
-        region,
-        station,
-        exits,
-        exitName = {
-            'Total Exits': 'Total Exits',
-        };
+    var which = 'Total Exits';    
+    
+    function switcher(new_which){
+      which = new_which;
+      draw();
+    }
 
-    for (region in data) {
-        if (data.hasOwnProperty(region)) {
-            regionVal = 0;
-            regionP = {
-                id: 'id_' + regionI,
-                name: region,
-                color: color_regs[region]
+    
+    
+function draw(){
+    $.getJSON('data/station_data2017.json', function (data) {
+
+
+
+
+        var points = [],
+            regionP,
+            regionVal,
+            regionI = 0,
+            stationP,
+            stationI,
+            exitsP,
+            exitsI,
+            region,
+            station,
+            exits,
+            exitName = {
+                'Total Exits': 'Total Exits',
             };
-            stationI = 0;
-            for (station in data[region]) {                
-                var mycolor;
-                if (data[region].hasOwnProperty(station)) {
-                    var r,g,b,a;
-                    if(data[region][station]["Class"] == 'Urban'){
-                        r = 200;
-                        g = 20;
-                        b = 20;
-                        a = +data[region][station]["Total Exits"]/400000 + .5;
-                        mycolor = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-                    }
-                    if(data[region][station]["Class"] == 'Suburban'){
-                        r = 198; //198, 181, 60
-                        g = 181;
-                        b = 60;
-                        a = +data[region][station]["Total Exits"]/150000 + .1;
-                        mycolor = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-                    }
-                    if(data[region][station]["Class"] == 'Hills'){
-                        mycolor = { 
-                            pattern: {
-                                path: {
-                                    d: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
-                                    strokeWidth: 5
-                                },
-                                width: 10,
-                                height: 10,
-                                opacity: +data[region][station]["Total Exits"]/150000 + .1,
-                                color: "#c6b53c"
-                            }
+
+        for (region in data) {
+            if (data.hasOwnProperty(region)) {
+                regionVal = 0;
+                regionP = {
+                    id: 'id_' + regionI,
+                    name: region,
+                    color: color_regs[region]
+                };
+                stationI = 0;
+                for (station in data[region]) {                
+                    var mycolor;
+                    if (data[region].hasOwnProperty(station)) {
+                        var r,g,b,a;
+                        if(data[region][station]["Class"] == 'Urban'){
+                            mycolor = { 
+                                pattern: {
+                                    path: {
+                                        d: 'M 2 1 L 4 1 M 0 2 L 4 1 M 0 2 L 4 2 M 0 3 L 4 3 M 0 4 L 4 4',
+                                        strokeWidth: 1
+                                    },
+                                    width: 4,
+                                    height: 4,
+                                    opacity: +data[region][station][which]/1200000 + .2,
+                                    color: "rgb(90,180,172)" //90,180,172
+                                }
+                            };                        
+                        }
+                        if(data[region][station]["Class"] == 'Suburban'){
+                            a = +data[region][station][which]/200000;
+                            mycolor = 'rgba(216,179,101,' + a + ')';
+                        }
+                        if(data[region][station]["Class"] == 'Hills'){
+                            mycolor = { 
+                                pattern: {
+                                    path: {
+                                        d: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
+                                        strokeWidth: 5
+                                    },
+                                    width: 10,
+                                    height: 10,
+                                    opacity: +data[region][station][which]/200000,
+                                    color: "rgb(216,179,101)" //216,179,101
+                                }
+                            };
+                        }
+                        stationP = {
+                            id: regionP.id + '_' + stationI,
+                            name: station,
+                            parent: regionP.id,
+                            color: mycolor
                         };
+                        console.log(stationP.color);
+                        points.push(stationP);
+                        exitsI = 0;
+                        exitsP = {
+                            id: stationP.id + '_' + exitsI,
+                            name: station,
+                            parent: stationP.id,
+                            value: +data[region][station][which]
+                        };
+                        regionVal += exitsP.value;
+                        points.push(exitsP);
+                        exitsI = exitsI + 1;                    
+                        stationI = stationI + 1;
                     }
-                    stationP = {
-                        id: regionP.id + '_' + stationI,
-                        name: station,
-                        parent: regionP.id,
-                        color: mycolor
-                    };
-                    console.log(stationP.color);
-                    points.push(stationP);
-                    exitsI = 0;
-                    exitsP = {
-                        id: stationP.id + '_' + exitsI,
-                        name: station+" %",
-                        parent: stationP.id,
-                        value: +data[region][station]["Total Exits"]
-                    };
-                    regionVal += exitsP.value;
-                    points.push(exitsP);
-                    exitsI = exitsI + 1;                    
-                    stationI = stationI + 1;
+                }
+                regionP.value = regionVal;
+                points.push(regionP);
+                regionI = regionI + 1;
+            }
+        }
+        Highcharts.chart('container', {
+            series: [{
+                type: 'treemap',
+                layoutAlgorithm: 'squarified',
+                allowDrillToNode: true,
+                animationLimit: 1000,
+                dataLabels: {
+                    allowOverlap: true,
+                    enabled: false,
+                },
+                levelIsConstant: true,
+                levels: [{
+                    level: 1,
+                    borderWidth: 5,
+                    borderColor: '#FFFFFF',
+                    dataLabels: {
+                        enabled: true,
+                        align: 'left',
+                        verticalAlign: 'top',
+                        style: {
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                            color: '#FFFFFF',
+                            shadowColor: '#FF0000'
+                        }
+                    },
+                },{
+                    level: 2,
+                    borderWidth: 2,
+                    borderColor: '#000000',
+                    dataLabels: {
+                        enabled: true,
+                        align: 'center',
+                        style: {
+                            fontSize: '13px',
+                            fontWeight: 'bold',
+                            align: 'center',
+                        }                    
+                    },
+                },{
+                    level: 3,
+                    dataLabels: {
+                        enabled: false,
+
+                    },
+                }],
+                data: points
+            }],
+            subtitle: {
+                floating: true,
+                text: ''
+            },
+            title: {
+                floating: true,
+                text: ''
+            },
+            tooltip: {
+                pointFormatter: function () { 
+                    var percent = Math.round(this.value/10122862 * 100);
+                    return '<b>'+this.name+'</b><br>  ' + this.value.toLocaleString() +' '+ which+'<br>  (' + percent + '% of all rides)';  
                 }
             }
-            regionP.value = regionVal;
-            points.push(regionP);
-            regionI = regionI + 1;
-        }
-    }
-    Highcharts.chart('container', {
-        series: [{
-            type: 'treemap',
-            layoutAlgorithm: 'squarified',
-            allowDrillToNode: true,
-            animationLimit: 1000,
-            dataLabels: {
-                allowOverlap: true,
-                enabled: false,
-            },
-            levelIsConstant: true,
-            levels: [{
-                level: 1,
-                borderWidth: 5,
-                borderColor: '#FFFFFF',
-                dataLabels: {
-                    enabled: true,
-                    align: 'left',
-                    verticalAlign: 'top',
-                    style: {
-                        fontSize: '20px',
-                        fontWeight: 'bold',
-                        color: '#EEEEEE'
-                    }
-                },
-            },{
-                level: 2,
-                borderWidth: 1,
-                borderColor: '#000000',
-                dataLabels: {
-                    enabled: true,
-                    align: 'center',
-                    style: {
-                        fontSize: '12px',
-                        fontWeight: 'bold',
-                        align: 'center',
-                    }                    
-                },
-            },{
-                level: 3,
-                dataLabels: {
-                    enabled: false,
-                    
-                },
-            }],
-            data: points
-        }],
-        subtitle: {
-            floating: true,
-            text: ''
-        },
-        title: {
-            floating: true,
-            text: ''
-        },
-        tooltip: {
-            pointFormatter: function () { 
-                var percent = Math.round(this.value/5006329 * 100);
-                return '<b>'+this.name+'</b><br>  ' + this.value.toLocaleString() + ' exits<br>  (' + percent + '% of all exits)';  
-            }
-        }
-    });
+        });
 
-});
+    });
+}
+draw();    
 </script>

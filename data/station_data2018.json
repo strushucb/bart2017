@@ -1,5 +1,10 @@
 {
     "East Hills": {
+      "Antioch": {
+          "Total Exits": 70159,
+          "Total Entries": 67269,
+          "Class": "Hills"
+       },
        "Concord": {
           "Total Exits": 137072,
           "Total Entries": 136998,
@@ -28,6 +33,11 @@
        "Orinda": {
           "Total Exits": 74243,
           "Total Entries": 73536,
+          "Class": "Hills"
+       },
+       "Pittsburg Center": {
+          "Total Exits": 23461,
+          "Total Entries": 23667,
           "Class": "Hills"
        },
        "Pleasant Hill": {
