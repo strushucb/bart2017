@@ -43,7 +43,7 @@
 
 <body>
    <h2>BART Ridership: Daily Ridership per Station in 2017</h2>
-    <h3>The size of the square indicates proportion of rider exits or entries in that region or station. Scroll over station name to see the daily average for entries or exits from that station in 2017. Use the buttons below the chart to switch between entries or exits. Source: <a = href="https://www.bart.gov/about/reports/ridership">BART</a></h3>
+   <b>The size of the square indicates proportion of rider exits or entries in that region or station. Scroll over station name to see the daily average for entries or exits from that station in 2017. Use the buttons below the chart to switch between entries or exits. Source: <a = href="https://www.bart.gov/about/reports/ridership">BART</a></b>
     <table style="color:#FFFFFF; text-shadow: 0 0 3px #000000, 0 0 5px #999999">
             <tr>
                 <td background="data/urban.PNG"><b>Urban Areas</b></td>
@@ -51,8 +51,8 @@
                 <td background="data/eastofhills.PNG"><b>Suburban Areas "East of the Hills"</b></td>
                 <td>  
                     <form name="myForm">
-                    <input type="radio" name="ToOrFrom" onclick="switcher('Total Exits')" checked >Exits per Day
-                    <input type="radio" name="ToOrFrom" onclick="switcher('Total Entries')">Entries per Day
+                    <input type="radio" name="ToOrFrom" onclick="switcher('Total Exits')" checked ><b>Exits per Day</b>
+                        <input type="radio" name="ToOrFrom" onclick="switcher('Total Entries')"><b>Entries per Day</b>
                     </form>
                 </td>
             </tr>
@@ -63,7 +63,7 @@
             <tr>    
             <td id="container"></td>
               </tr>
-            <tr><td>Note: Antioch and Pittsburg Center Stations were not operational in 2017. </td></tr>
+            <tr><td><h3>Note: Antioch and Pittsburg Center Stations were not operational in 2017.</h3></td></tr>
           <tr>  
             <td id="map"><img width= 33% src="data/system-map.gif"/></td>
           </tr>
