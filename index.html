@@ -9,12 +9,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
 
-
     body{
         background: #111;
         color: #FFF;
         font-family: 'Open Sans', sans-serif;
-        font-size: 14px;
     }
     
     tr, td {
@@ -38,13 +36,18 @@
         width: 30vw;
         margin: 0 auto;
     }
+    a {
+        color: darkgrey;
+    }
 
 </style>
 
 <body>
-   <h2>BART Ridership: Daily Ridership per Station in 2017</h2>
-   <b>The size of the square indicates proportion of rider exits or entries in that region or station.<br>Scroll over station name to see the daily average for entries or exits from that station in 2017.<br>Use the buttons to switch between entries or exits. Source: <a href="https://www.bart.gov/about/reports/ridership">BART</a></b>
-    <table style="color:#FFFFFF; text-shadow: 0 0 3px #000000, 0 0 5px #999999">
+   <h2>BART Daily Ridership per Station in 2017</h2>
+   <b>The size of the square indicates proportion of rider exits or entries in that region or station.</b><br>
+   <b>Scroll over station name to see the daily average for entries or exits from that station in 2017.</b><br>
+   <b>Use the buttons to switch between entries or exits. Source: <a href="https://www.bart.gov/about/reports/ridership">BART</a></b><br>
+   <table style="color:#FFFFFF; text-shadow: 0 0 3px #000000, 0 0 5px #999999">
             <tr>
                 <td background="data/urban.PNG"><b>Urban Stations</b></td>
                 <td background="data/suburban.PNG"><b>Suburban Stations</b></td>
@@ -59,7 +62,6 @@
     </table>
             
     <table>
-            
             <tr>    
             <td id="container"></td>
               </tr>
