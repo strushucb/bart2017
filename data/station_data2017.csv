@@ -1,51 +1,47 @@
 Two-Letter Station Code,Station Name,Total Exits,Total Entries,Class,Region
-RM,Richmond,98334,104698,Suburban,East Bay - North
-EN,El Cerrito Del Norte,197322,190089,Suburban,East Bay - North
-EP,El Cerrito Plaza,115158,113379,Suburban,East Bay - North
-AS,Ashby,125081,129088,Urban,East Bay - North
-BK,Berkeley,313528,297771,Urban,East Bay - North
-NB,North Berkeley,105097,104375,Urban,East Bay - North
-BF,Bayfair,133528,135009,Suburban,East Bay - South
-FM,Fremont,162493,161379,Suburban,East Bay - South
-HY,Hayward,105925,107329,Suburban,East Bay - South
-SH,South Hayward,69759,72928,Suburban,East Bay - South
-SL,San Leandro,150747,149042,Suburban,East Bay - South
-UC,Union City,112537,114249,Suburban,East Bay - South
-WS,Warm Springs,81810,83828,Suburban,East Bay - South
-AN,Antioch,70159,67269,Hills,East Hills
-CN,Concord,137072,136998,Hills,East Hills
-CV,Castro Valley,70222,71347,Hills,East Hills
-ED,Dublin/Pleasanton,209902,215592,Hills,East Hills
-LF,Lafayette,85595,83591,Hills,East Hills
-NC,North Concord,49093,52092,Hills,East Hills
-OR,Orinda,74243,73536,Hills,East Hills
-PC,Pittsburg Center,23461,23667,Hills,East Hills
-PH,Pleasant Hill,175447,179166,Hills,East Hills
-WC,Walnut Creek,167793,164539,Hills,East Hills
-WD,West Dublin/Pleasanton,92514,87995,Hills,East Hills
-WP,Pittsburg/Bay Point,94076,98294,Hills,East Hills
-12,12th Street / Oakland City Center,323814,319434,Urban,Oakland
-19,19th Street Oakland,301073,303280,Urban,Oakland
-CL,Coliseum,166374,163334,Urban,Oakland
-FV,Fruitvale,197317,195716,Urban,Oakland
-LM,Lake Merritt,171720,170158,Urban,Oakland
-MA,MacArthur,210443,208356,Urban,Oakland
-OA,Oakland International Airport,37725,43993,Urban,Oakland
-OW,West Oakland,177303,195216,Urban,Oakland
-RR,Rockridge,141700,135222,Urban,Oakland
-CM,Colma,98769,102081,Suburban,San Francisco
-DC,Daly City,215250,214435,Suburban,San Francisco
-MB,Millbrae,153526,162737,Suburban,San Francisco
-SB,San Bruno,90203,88928,Suburban,San Francisco
-SO,San Francisco International Airport,178646,217044,Suburban,San Francisco
-SS,South San Francisco,80054,81507,Suburban,San Francisco
-16,16th Street Mission,312753,315295,Urban,San Francisco
-24,24th Street Mission,301091,307385,Urban,San Francisco
-BP,Balboa Park,256985,291829,Urban,San Francisco
-CC,Civic Center,556721,585482,Urban,San Francisco
-EM,Embarcadero,1190484,1020193,Urban,San Francisco
-GP,Glen Park,184782,198052,Urban,San Francisco
-MT,Montgomery Street,1042837,981387,Urban,San Francisco
-PL,Powell Street,712396,804548,Urban,San Francisco
-,,,,,
-,,,,,
+EN,El Cerrito Del Norte,7119,6872,Suburban,East Bay - North
+EP,El Cerrito Plaza,4127,4054,Suburban,East Bay - North
+RM,Richmond,3450,3619,Suburban,East Bay - North
+AS,Ashby,4407,4555,Urban,East Bay - North
+BK,Berkeley,10895,10330,Urban,East Bay - North
+NB,North Berkeley,3837,3749,Urban,East Bay - North
+BF,Bayfair,4729,4769,Suburban,East Bay - South
+FM,Fremont,6036,6080,Suburban,East Bay - South
+HY,Hayward,3964,3946,Suburban,East Bay - South
+SH,South Hayward,2371,2489,Suburban,East Bay - South
+SL,San Leandro,5095,5021,Suburban,East Bay - South
+UC,Union City,3838,3829,Suburban,East Bay - South
+WS,Warm Springs,1816,1834,Suburban,East Bay - South
+CN,Concord,4860,4886,Hills,East Hills
+CV,Castro Valley,2334,2385,Hills,East Hills
+ED,Dublin / Pleasanton,6621,6760,Hills,East Hills
+LF,Lafayette,2913,2824,Hills,East Hills
+NC,North Concord,2070,2168,Hills,East Hills
+OR,Orinda,2464,2434,Hills,East Hills
+PH,Pleasant Hill,5886,6031,Hills,East Hills
+WC,Walnut Creek,5809,5637,Hills,East Hills
+WD,West Dublin / Pleasanton,2980,2847,Hills,East Hills
+WP,Pittsburg / Bay Point,5306,5243,Hills,East Hills
+12,12th Street / Oakland City Center,10966,10777,Urban,Oakland
+19,19th Street Oakland,10513,10542,Urban,Oakland
+CL,Coliseum,5963,5881,Urban,Oakland
+FV,Fruitvale,6873,6831,Urban,Oakland
+LM,Lake Merritt,5880,5723,Urban,Oakland
+MA,MacArthur,7557,7460,Urban,Oakland
+OA,Oakland International Airport,1286,1410,Urban,Oakland
+OW,West Oakland,6157,6679,Urban,Oakland
+RR,Rockridge,4926,4625,Urban,Oakland
+CM,Colma,3419,3511,Suburban,San Francisco
+DC,Daly City,7299,7761,Suburban,San Francisco
+MB,Millbrae,5283,5533,Suburban,San Francisco
+SB,San Bruno,3063,2996,Suburban,San Francisco
+SO,San Francisco International Airport,5729,6417,Suburban,San Francisco
+SS,South San Francisco,2820,2858,Suburban,San Francisco
+16,16th Street Mission,10788,10746,Urban,San Francisco
+24,24th Street Mission,10456,10847,Urban,San Francisco
+BP,Balboa Park,8365,9423,Urban,San Francisco
+CC,Civic Center,19312,20758,Urban,San Francisco
+EM,Embarcadero,37679,32292,Urban,San Francisco
+GP,Glen Park,6016,6478,Urban,San Francisco
+MT,Montgomery Street,34781,33049,Urban,San Francisco
+PL,Powell Street,24514,27613,Urban,San Francisco

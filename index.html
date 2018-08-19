@@ -43,12 +43,12 @@
 
 <body>
    <h2>BART Ridership: Daily Ridership per Station in 2017</h2>
-   <b>The size of the square indicates proportion of rider exits or entries in that region or station. Scroll over station name to see the daily average for entries or exits from that station in 2017. Use the buttons below the chart to switch between entries or exits. Source: <a = href="https://www.bart.gov/about/reports/ridership">BART</a></b>
+   <b>The size of the square indicates proportion of rider exits or entries in that region or station.<br>Scroll over station name to see the daily average for entries or exits from that station in 2017.<br>Use the buttons to switch between entries or exits. Source: <a href="https://www.bart.gov/about/reports/ridership">BART</a></b>
     <table style="color:#FFFFFF; text-shadow: 0 0 3px #000000, 0 0 5px #999999">
             <tr>
-                <td background="data/urban.PNG"><b>Urban Areas</b></td>
-                <td background="data/suburban.PNG"><b>Suburban Areas</b></td>
-                <td background="data/eastofhills.PNG"><b>Suburban Areas "East of the Hills"</b></td>
+                <td background="data/urban.PNG"><b>Urban Stations</b></td>
+                <td background="data/suburban.PNG"><b>Suburban Stations</b></td>
+                <td background="data/eastofhills.PNG"><b>Suburban Stations "East of the Hills"</b></td>
                 <td>  
                     <form name="myForm">
                     <input type="radio" name="ToOrFrom" onclick="switcher('Total Exits')" checked ><b>Exits per Day</b>
@@ -73,6 +73,19 @@
 
 
 <script>
+    Highcharts.theme = {
+        chart: {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                stops: [
+                    [0, '#FFFFFF'],
+                    [1, '#FFFFFF']
+                ]
+            },
+        },
+        background2: '#FFFFFF',
+    }
+    Highcharts.setOptions(Highcharts.theme);
     
     var color_regs = {
         "San Francisco": "#000000",
@@ -82,9 +95,9 @@
         "East Hills": "#000000"
     }
     
-    var whichTotal = {
-        "Total Exits" : 10122862,
-        "Total Entries" : 10122862
+    var totalText = {
+        "Total Exits" : 'Exits/Day',
+        "Total Entries" : 'Entries/Day'
     }
 
     
@@ -140,13 +153,13 @@ function draw(){
                                     },
                                     width: 4,
                                     height: 4,
-                                    opacity: +data[region][station][which]/1200000 + .2,
+                                    opacity: +data[region][station][which]/40000 + .3,
                                     color: "rgb(90,180,172)" //90,180,172
                                 }
                             };                        
                         }
                         if(data[region][station]["Class"] == 'Suburban'){
-                            a = +data[region][station][which]/200000;
+                            a = +data[region][station][which]/10000 + .2;
                             mycolor = 'rgba(216,179,101,' + a + ')';
                         }
                         if(data[region][station]["Class"] == 'Hills'){
@@ -158,7 +171,7 @@ function draw(){
                                     },
                                     width: 10,
                                     height: 10,
-                                    opacity: +data[region][station][which]/200000,
+                                    opacity: +data[region][station][which]/10000 +.2,
                                     color: "rgb(216,179,101)" //216,179,101
                                 }
                             };
@@ -190,6 +203,12 @@ function draw(){
             }
         }
         Highcharts.chart('container', {
+            plotOptions: {
+                treemap: {
+                    plotBackgroundColor: "#000000",
+                    plotBorderColor: "#000000",
+                }
+            },
             series: [{
                 type: 'treemap',
                 layoutAlgorithm: 'squarified',
@@ -209,10 +228,10 @@ function draw(){
                         align: 'left',
                         verticalAlign: 'top',
                         style: {
-                            fontSize: '20px',
+                            fontSize: '18px',
                             fontWeight: 'bold',
-                            color: '#FFFFFF',
-                            shadowColor: '#FF0000'
+                            color: '#000000',
+                            textOutline: '3px contrast'
                         }
                     },
                 },{
@@ -226,6 +245,8 @@ function draw(){
                             fontSize: '13px',
                             fontWeight: 'bold',
                             align: 'center',
+                            color: '#FFFFFF',
+                            textOutline: '2px contrast'                            
                         }                    
                     },
                 },{
@@ -247,8 +268,8 @@ function draw(){
             },
             tooltip: {
                 pointFormatter: function () { 
-                    var percent = Math.round(this.value/10122862 * 100);
-                    return '<b>'+this.name+'</b><br>  ' + this.value.toLocaleString() +' '+ which+'<br>  (' + percent + '% of all rides)';  
+                    var percent = Math.round(this.value/342573 * 100);
+                    return '<b>'+this.name+'</b><br>  ' + this.value.toLocaleString() +' '+ totalText[which]+'<br>  (' + percent + '% of all rides)';  
                 }
             }
         });

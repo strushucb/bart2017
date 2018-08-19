@@ -1,243 +1,242 @@
 {
     "East Hills": {
-       "Concord": {
-          "Total Exits": 137072,
-          "Total Entries": 136998,
+        "Concord": {
+          "Total Exits": 4860,
+          "Total Entries": 4886,
           "Class": "Hills"
-       },
-       "Castro Valley": {
-          "Total Exits": 70222,
-          "Total Entries": 71347,
+        },
+        "Castro Valley": {
+          "Total Exits": 2334,
+          "Total Entries": 2385,
           "Class": "Hills"
-       },
-       "Dublin / Pleasanton": {
-          "Total Exits": 209902,
-          "Total Entries": 215592,
+        },
+        "Dublin / Pleasanton": {
+          "Total Exits": 6621,
+          "Total Entries": 6760,
           "Class": "Hills"
-       },
-       "Lafayette": {
-          "Total Exits": 85595,
-          "Total Entries": 83591,
+        },
+        "Lafayette": {
+          "Total Exits": 2913,
+          "Total Entries": 2824,
           "Class": "Hills"
-       },
-       "N. Concord": {
-          "Total Exits": 49093,
-          "Total Entries": 52092,
+        },
+        "N. Concord": {
+          "Total Exits": 2070,
+          "Total Entries": 2168,
           "Class": "Hills"
-       },
-       "Orinda": {
-          "Total Exits": 74243,
-          "Total Entries": 73536,
+        },
+        "Orinda": {
+          "Total Exits": 2464,
+          "Total Entries": 2434,
           "Class": "Hills"
-       },
-       "Pleasant Hill": {
-          "Total Exits": 175447,
-          "Total Entries": 179166,
+        },
+        "Pleasant Hill": {
+          "Total Exits": 5886,
+          "Total Entries": 6031,
           "Class": "Hills"
-       },
-       "Walnut Creek": {
-          "Total Exits": 167793,
-          "Total Entries": 164539,
+        },
+        "Walnut Creek": {
+          "Total Exits": 5809,
+          "Total Entries": 5637,
           "Class": "Hills"
-       },
-       "W. Dublin / Pleasanton": {
-          "Total Exits": 92514,
-          "Total Entries": 87995,
+        },
+        "W. Dublin / Pleasanton": {
+          "Total Exits": 2980,
+          "Total Entries": 2847,
           "Class": "Hills"
-       },
-       "Pittsburg / Bay Point": {
-          "Total Exits": 94076,
-          "Total Entries": 98294,
+        },
+        "Pittsburg / Bay Point": {
+          "Total Exits": 5306,
+          "Total Entries": 5243,
           "Class": "Hills"
-       }        
-        
+        }
     },
     "East Bay - North": {
+        "El Cerrito Del Norte": {
+          "Total Exits": 7119,
+          "Total Entries": 6872,
+          "Class": "Suburban"
+        },
+        "El Cerrito Plaza": {
+          "Total Exits": 4127,
+          "Total Entries": 4054,
+          "Class": "Suburban"
+        },
         "Richmond": {
-          "Total Exits": 98334,
-          "Total Entries": 104698,
+          "Total Exits": 3450,
+          "Total Entries": 3619,
           "Class": "Suburban"
-       },
-       "El Cerrito Del Norte": {
-          "Total Exits": 197322,
-          "Total Entries": 190089,
-          "Class": "Suburban"
-       },
-       "El Cerrito Plaza": {
-          "Total Exits": 115158,
-          "Total Entries": 113379,
-          "Class": "Suburban"
-       },
-       "Ashby": {
-          "Total Exits": 125081,
-          "Total Entries": 129088,
+        },
+        "Ashby": {
+          "Total Exits": 4407,
+          "Total Entries": 4555,
           "Class": "Urban"
-       },
-       "Berkeley": {
-          "Total Exits": 313528,
-          "Total Entries": 297771,
+        },
+        "Berkeley": {
+          "Total Exits": 10895,
+          "Total Entries": 10330,
           "Class": "Urban"
-       },
-       "N. Berkeley": {
-          "Total Exits": 105097,
-          "Total Entries": 104375,
+        },
+        "N. Berkeley": {
+          "Total Exits": 3837,
+          "Total Entries": 3749,
           "Class": "Urban"
-       }
+        }
     },
     "Oakland": {
-       "12th St. / Oakland City Center": {
-          "Total Exits": 323814,
-          "Total Entries": 319434,
+        "12th St. / Oakland City Center": {
+          "Total Exits": 10966,
+          "Total Entries": 10777,
           "Class": "Urban"
-       },
-       "19th St. Oakland": {
-          "Total Exits": 301073,
-          "Total Entries": 303280,
+        },
+        "19th St. Oakland": {
+          "Total Exits": 10513,
+          "Total Entries": 10542,
           "Class": "Urban"
-       },
-       "Coliseum": {
-          "Total Exits": 166374,
-          "Total Entries": 163334,
+        },
+        "Coliseum": {
+          "Total Exits": 5963,
+          "Total Entries": 5881,
           "Class": "Urban"
-       },
-       "Fruitvale": {
-          "Total Exits": 197317,
-          "Total Entries": 195716,
+        },
+        "Fruitvale": {
+          "Total Exits": 6873,
+          "Total Entries": 6831,
           "Class": "Urban"
-       },
-       "Lake Merritt": {
-          "Total Exits": 171720,
-          "Total Entries": 170158,
+        },
+        "Lake Merritt": {
+          "Total Exits": 5880,
+          "Total Entries": 5723,
           "Class": "Urban"
-       },
-       "MacArthur": {
-          "Total Exits": 210443,
-          "Total Entries": 208356,
+        },
+        "MacArthur": {
+          "Total Exits": 7557,
+          "Total Entries": 7460,
           "Class": "Urban"
-       },
-       "OAK": {
-          "Total Exits": 37725,
-          "Total Entries": 43993,
+        },
+        "OAK": {
+          "Total Exits": 1286,
+          "Total Entries": 1410,
           "Class": "Urban"
-       },
-       "W. Oakland": {
-          "Total Exits": 177303,
-          "Total Entries": 195216,
+        },
+        "West Oakland": {
+          "Total Exits": 6157,
+          "Total Entries": 6679,
           "Class": "Urban"
-       },
-       "Rockridge": {
-          "Total Exits": 141700,
-          "Total Entries": 135222,
+        },
+        "Rockridge": {
+          "Total Exits": 4926,
+          "Total Entries": 4625,
           "Class": "Urban"
-       }        
+        }        
     },
     "San Francisco": {
-       "Colma": {
-          "Total Exits": 98769,
-          "Total Entries": 102081,
+        "Colma": {
+          "Total Exits": 3419,
+          "Total Entries": 3511,
           "Class": "Suburban"
-       },
-       "Daly City": {
-          "Total Exits": 215250,
-          "Total Entries": 214435,
+        },
+        "Daly City": {
+          "Total Exits": 7299,
+          "Total Entries": 7761,
           "Class": "Suburban"
-       },
-       "Millbrae": {
-          "Total Exits": 153526,
-          "Total Entries": 162737,
+        },
+        "Millbrae": {
+          "Total Exits": 5283,
+          "Total Entries": 5533,
           "Class": "Suburban"
-       },
-       "San Bruno": {
-          "Total Exits": 90203,
-          "Total Entries": 88928,
+        },
+        "San Bruno": {
+          "Total Exits": 3063,
+          "Total Entries": 2996,
           "Class": "Suburban"
-       },
-       "SFO": {
-          "Total Exits": 178646,
-          "Total Entries": 217044,
+        },
+        "SFO": {
+          "Total Exits": 5729,
+          "Total Entries": 6417,
           "Class": "Suburban"
-       },
-       "S. San Francisco": {
-          "Total Exits": 80054,
-          "Total Entries": 81507,
+        },
+        "S. San Francisco": {
+          "Total Exits": 2820,
+          "Total Entries": 2858,
           "Class": "Suburban"
-       },
-       "16th St. Mission": {
-          "Total Exits": 312753,
-          "Total Entries": 315295,
+        },
+        "16th St. Mission": {
+          "Total Exits": 10788,
+          "Total Entries": 10746,
           "Class": "Urban"
-       },
-       "24th St. Mission": {
-          "Total Exits": 301091,
-          "Total Entries": 307385,
+        },
+        "24th St. Mission": {
+          "Total Exits": 10456,
+          "Total Entries": 10847,
           "Class": "Urban"
-       },
-       "Balboa Park": {
-          "Total Exits": 256985,
-          "Total Entries": 291829,
+        },
+        "Balboa Park": {
+          "Total Exits": 8365,
+          "Total Entries": 9423,
           "Class": "Urban"
-       },
-       "Civic Center": {
-          "Total Exits": 556721,
-          "Total Entries": 585482,
+        },
+        "Civic Center": {
+          "Total Exits": 19312,
+          "Total Entries": 20758,
           "Class": "Urban"
-       },
-       "Embarcadero": {
-          "Total Exits": 1190484,
-          "Total Entries": 1020193,
+        },
+        "Embarcadero": {
+          "Total Exits": 37679,
+          "Total Entries": 32292,
           "Class": "Urban"
-       },
-       "Glen Park": {
-          "Total Exits": 184782,
-          "Total Entries": 198052,
+        },
+        "Glen Park": {
+          "Total Exits": 6016,
+          "Total Entries": 6478,
           "Class": "Urban"
-       },
-       "Montgomery St.": {
-          "Total Exits": 1042837,
-          "Total Entries": 981387,
+        },
+        "Montgomery Street": {
+          "Total Exits": 34781,
+          "Total Entries": 33049,
           "Class": "Urban"
-       },
-       "Powell St.": {
-          "Total Exits": 712396,
-          "Total Entries": 804548,
+        },
+        "Powell Street": {
+          "Total Exits": 24514,
+          "Total Entries": 27613,
           "Class": "Urban"
-       }
+        }
     },
     "East Bay - South": {
-       "Bayfair": {
-          "Total Exits": 133528,
-          "Total Entries": 135009,
+        "Bayfair": {
+          "Total Exits": 4729,
+          "Total Entries": 4769,
           "Class": "Suburban"
-       },
-       "Fremont": {
-          "Total Exits": 162493,
-          "Total Entries": 161379,
+        },
+        "Fremont": {
+          "Total Exits": 6036,
+          "Total Entries": 6080,
           "Class": "Suburban"
-       },
-       "Hayward": {
-          "Total Exits": 105925,
-          "Total Entries": 107329,
+        },
+        "Hayward": {
+          "Total Exits": 3964,
+          "Total Entries": 3946,
           "Class": "Suburban"
-       },
-       "S. Hayward": {
-          "Total Exits": 69759,
-          "Total Entries": 72928,
+        },
+        "S. Hayward": {
+          "Total Exits": 2371,
+          "Total Entries": 2489,
           "Class": "Suburban"
-       },
-       "San Leandro": {
-          "Total Exits": 150747,
-          "Total Entries": 149042,
+        },
+        "San Leandro": {
+          "Total Exits": 5095,
+          "Total Entries": 5021,
           "Class": "Suburban"
-       },
-       "Union City": {
-          "Total Exits": 112537,
-          "Total Entries": 114249,
+        },
+        "Union City": {
+          "Total Exits": 3838,
+          "Total Entries": 3829,
           "Class": "Suburban"
-       },
-       "Warm Springs": {
-          "Total Exits": 81810,
-          "Total Entries": 83828,
+        },
+        "Warm Springs": {
+          "Total Exits": 1816,
+          "Total Entries": 1834,
           "Class": "Suburban"
-       }        
+        }    
     }
 }
